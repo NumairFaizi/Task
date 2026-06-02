@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Daily Quest 💖</title>
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -65,7 +67,6 @@
             font-weight: 600;
         }
 
-        /* Glassmorphic Balance Widget */
         .score-board {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
@@ -94,14 +95,13 @@
             color: #e11d48;
         }
 
-        /* App Container Layout */
         .app-container {
             width: 100%;
             max-width: 500px;
         }
 
         .app-page {
-            display: none; /* Controlled via Navigation tabs */
+            display: none;
             animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
         }
 
@@ -129,7 +129,6 @@
             color: #0f172a;
         }
 
-        /* Premium Card styling */
         .card-item {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -183,7 +182,6 @@
             display: inline-block;
         }
 
-        /* Micro-interactive Buttons */
         button {
             font-family: inherit;
             background: linear-gradient(135deg, #e11d48, #ff4757);
@@ -218,7 +216,44 @@
             box-shadow: none;
         }
 
-        /* Advanced Upload Area UI */
+        .text-response-container {
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .love-text-box {
+            width: 100%;
+            height: 75px;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(225, 29, 72, 0.2);
+            background: rgba(255, 255, 255, 0.6);
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: var(--text);
+            resize: none;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .love-text-box:focus {
+            border-color: #e11d48;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+        }
+
+        .saved-response-box {
+            margin-top: 10px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            border-left: 4px solid var(--primary);
+            border-radius: 4px 16px 16px 4px;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #475569;
+            line-height: 1.4;
+        }
+
         .upload-container {
             margin-top: 14px;
         }
@@ -255,7 +290,6 @@
             display: none;
         }
 
-        /* Native-feeling Floating Nav Bar */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -292,9 +326,7 @@
             gap: 2px;
         }
 
-        .nav-item span.icon {
-            font-size: 1.25rem;
-        }
+        .nav-item span.icon { font-size: 1.25rem; }
 
         .nav-item.active {
             background: white;
@@ -302,7 +334,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* Activity Logs View UI */
         .feed-container {
             display: flex;
             flex-direction: column;
@@ -336,26 +367,29 @@
 
     <div class="app-container">
         
+        <!-- PAGE 1: TASKS -->
         <div id="page-tasks" class="app-page active">
             <div class="section-header">
                 <h2>Daily Goals</h2>
                 <button class="btn-reset" id="admin-reset-btn">🔄 New Day</button>
             </div>
-            <div id="tasks-list"></div>
+            <div id="tasks-list"><!-- Injected --></div>
         </div>
 
+        <!-- PAGE 2: REWARDS -->
         <div id="page-rewards" class="app-page">
             <div class="section-header">
                 <h2>Rewards Shop</h2>
             </div>
-            <div id="rewards-list"></div>
+            <div id="rewards-list"><!-- Injected --></div>
         </div>
 
+        <!-- PAGE 3: HISTORY -->
         <div id="page-history" class="app-page">
             <div class="section-header">
                 <h2>Activity Timeline</h2>
             </div>
-            <div id="feed-list" class="feed-container"></div>
+            <div id="feed-list" class="feed-container"><!-- Injected --></div>
         </div>
 
     </div>
@@ -392,11 +426,12 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Updated Configuration Tasks Block
         const tasks = [
-            { id: 'task1', title: 'Drink 8 glasses of water 💧', points: 10, type: 'standard' },
+            { id: 'task1', title: 'Send a sweet morning text ☀️', points: 10, type: 'standard' },
             { id: 'task2', title: 'Upload a cute selfie of today 🤳', points: 30, type: 'upload' },
-            { id: 'task3', title: 'Do a 10-minute stretch 🧘‍♀️', points: 15, type: 'standard' },
-            { id: 'task4', title: 'Tell me one thing you love about us today 🥰', points: 20, type: 'standard' }
+            { id: 'task3', title: 'Send me a random useless fact or a terrible dad joke 🤓', points: 20, type: 'text-input' },
+            { id: 'task4', title: 'Let me choose your outfit for our next date night 👗👠', points: 40, type: 'standard' }
         ];
 
         const rewards = [
@@ -409,7 +444,6 @@
         let appData = { points: 0, completedTasks: {}, logs: [] };
         const docRef = doc(db, "questHub", "sharedState");
 
-        // Realtime Data sync
         onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 appData = docSnap.data();
@@ -419,7 +453,6 @@
             updateUI();
         });
 
-        // Tab Switching Engine
         window.switchTab = function(pageId, navButton) {
             document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -432,7 +465,6 @@
         function updateUI() {
             document.getElementById('total-points').innerText = appData.points || 0;
 
-            // Render Tasks Page
             const tasksList = document.getElementById('tasks-list');
             tasksList.innerHTML = '';
             tasks.forEach(task => {
@@ -441,10 +473,10 @@
                 const card = document.createElement('div');
                 card.className = 'card-item';
 
-                let uploadHTML = '';
+                let extraHTML = '';
                 if (task.type === 'upload') {
                     if (!isCompleted) {
-                        uploadHTML = `
+                        extraHTML = `
                             <div class="upload-container">
                                 <label class="file-drop-zone" for="file-${task.id}">
                                     <span style="font-size:1.4rem; margin-bottom:4px;">📸</span>
@@ -455,7 +487,21 @@
                             </div>
                         `;
                     } else {
-                        uploadHTML = `<img src="${taskStatus}" class="preview-img" style="display:block;" />`;
+                        extraHTML = `<img src="${taskStatus}" class="preview-img" style="display:block;" />`;
+                    }
+                } else if (task.type === 'text-input') {
+                    if (!isCompleted) {
+                        extraHTML = `
+                            <div class="text-response-container">
+                                <textarea id="text-input-${task.id}" class="love-text-box" placeholder="Type it here... 😂💡"></textarea>
+                            </div>
+                        `;
+                    } else {
+                        extraHTML = `
+                            <div class="saved-response-box">
+                                "💬 Share: ${taskStatus}"
+                            </div>
+                        `;
                     }
                 }
 
@@ -469,7 +515,7 @@
                             ${isCompleted ? '✅ Done' : 'Complete'}
                         </button>
                     </div>
-                    ${uploadHTML}
+                    ${extraHTML}
                 `;
                 tasksList.appendChild(card);
 
@@ -481,7 +527,6 @@
                 }
             });
 
-            // Render Rewards Page
             const rewardsList = document.getElementById('rewards-list');
             rewardsList.innerHTML = '';
             rewards.forEach(reward => {
@@ -507,7 +552,6 @@
                 }
             });
 
-            // Render History Log Page
             const feedList = document.getElementById('feed-list');
             if(appData.logs && appData.logs.length > 0) {
                 feedList.innerHTML = appData.logs.map(log => `
@@ -540,6 +584,8 @@
 
         async function completeTask(task, taskPoints, type) {
             let taskPayloadValue = true;
+            let customLogText = `✅ Completed "${task.title}"`;
+
             if (type === 'upload') {
                 if (!temporaryImageString) {
                     alert('Please choose a cute picture first!');
@@ -547,13 +593,22 @@
                 }
                 taskPayloadValue = temporaryImageString;
                 temporaryImageString = "";
+            } else if (type === 'text-input') {
+                const inputElement = document.getElementById(`text-input-${task.id}`);
+                const userText = inputElement.value.trim();
+                if (!userText) {
+                    alert('Please type out your joke or fact! 😂');
+                    return;
+                }
+                taskPayloadValue = userText;
+                customLogText = `💡 She dropped a note: "${userText}"`;
             }
 
             const updatedCompleted = { ...(appData.completedTasks || {}) };
             updatedCompleted[task.id] = taskPayloadValue;
 
             const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            const newLog = { text: `✅ Completed "${task.title}"`, time: timeString, type: 'complete' };
+            const newLog = { text: customLogText, time: timeString, type: 'complete' };
             const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 25);
 
             confetti({ particleCount: 140, spread: 60, origin: { y: 0.7 } });
