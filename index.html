@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Daily Quest 💖</title>
+    <style>
+        :root {
+            --primary-color: #ff6b81;
+            --secondary-color: #ffa502;
+            --background-color: #fff5f5;
+            --card-background: #ffffff;
+            --text-color: #2f3542;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .score-board {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            background: var(--card-background);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #ffe0e0;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .card-item {
+            display: flex;
+            flex-direction: column;
+            background: #fdfdfd;
+            border: 1px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+
+        .card-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .item-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #747d8c;
+        }
+
+        .points-tag {
+            background: #ffe0e6;
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #ff4757;
+        }
+
+        button:disabled {
+            background-color: #ced6e0;
+            cursor: not-allowed;
+        }
+
+        .upload-btn-wrapper {
+            margin-top: 10px;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background: #f1f2f6;
+            border: 1px dashed var(--primary-color);
+            border-radius: 5px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>💖 Days with My Fiancée 💖</h1>
+        <p>Complete daily tasks, earn points, and pamper yourself!</p>
+        <div class="score-board">✨ <span id="total-points">0</span> Points ✨</div>
+    </header>
+
+    <div class="container">
+        <!-- TASKS SECTION -->
+        <div class="section">
+            <h2>Today's Tasks</h2>
+            <div id="tasks-container">
+                <!-- Tasks will be injected by JavaScript -->
+            </div>
+        </div>
+
+        <!-- REWARDS SECTION -->
+        <div class="section">
+            <h2>Rewards Shop</h2>
+            <div id="rewards-container">
+                <!-- Rewards will be injected by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Configuration
+        const tasks = [
+            { id: 'task1', title: 'Drink 8 glasses of water 💧', points: 10, type: 'standard' },
+            { id: 'task2', title: 'Upload a cute selfie of today 🤳', points: 30, type: 'upload' },
+            { id: 'task3', title: 'Do a 10-minute stretch 🧘‍♀️', points: 15, type: 'standard' },
+            { id: 'task4', title: 'Tell me one thing you love about us today 🥰', points: 20, type: 'standard' }
+        ];
+
+        const rewards = [
+            { id: 'reward1', title: 'Ice Cream Date 🍦', cost: 50, desc: 'Any flavor, any time this week!' },
+            { id: 'reward2', title: 'Foot Massage 🦶', cost: 100, desc: 'A relaxing 30-minute foot rub.' },
+            { id: 'reward3', title: 'Skip Chore Pass 🎫', cost: 150, desc: 'Pass a chore of your choice to me.' },
+            { id: 'reward4', title: 'Grand Dinner Date 👑', cost: 300, desc: 'Your choice of restaurant, dressed to the nines.' }
+        ];
+
+        // State Management
+        let points = parseInt(localStorage.getItem('fiancee_points')) || 0;
+        let completedTasks = JSON.parse(localStorage.getItem('completed_tasks')) || [];
+
+        // Initialize UI
+        function updatePointsDisplay() {
+            document.getElementById('total-points').innerText = points;
+            localStorage.setItem('fiancee_points', points);
+            renderRewards(); // Re-render rewards to update button disabled states based on points
+        }
+
+        function renderTasks() {
+            const container = document.getElementById('tasks-container');
+            container.innerHTML = '';
+
+            tasks.forEach(task => {
+                const isCompleted = completedTasks.includes(task.id);
+                const card = document.createElement('div');
+                card.className = 'card-item';
+
+                let uploadHTML = '';
+                if (task.type === 'upload' && !isCompleted) {
+                    uploadHTML = `
+                        <div class="upload-btn-wrapper">
+                            <label class="custom-file-upload">
+                                <input type="file" id="file-${task.id}" accept="image/*" onchange="handleImageUpload('${task.id}')">
+                                📸 Choose Photo
+                            </label>
+                            <img id="preview-${task.id}" class="preview-img" />
+                        </div>
+                    `;
+                } else if (task.type === 'upload' && isCompleted) {
+                    // Grab saved image preview if it exists in localstorage
+                    const savedImg = localStorage.getItem(`img_${task.id}`);
+                    if(savedImg) {
+                        uploadHTML = `<img src="${savedImg}" class="preview-img" style="display:block;" />`;
+                    }
+                }
+
+                card.innerHTML = `
+                    <div class="card-row">
+                        <div class="item-info">
+                            <h3>${task.title}</h3>
+                            <span class="points">+${task.points} pts</span>
+                        </div>
+                        <button id="btn-${task.id}" ${isCompleted ? 'disabled' : ''} onclick="completeTask('${task.id}', ${task.points})">
+                            ${isCompleted ? '✅ Done' : 'Complete'}
+                        </button>
+                    </div>
+                    ${uploadHTML}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderRewards() {
+            const container = document.getElementById('rewards-container');
+            container.innerHTML = '';
+
+            rewards.forEach(reward => {
+                const canAfford = points >= reward.cost;
+                const card = document.createElement('div');
+                card.className = 'card-item';
+                card.innerHTML = `
+                    <div class="card-row">
+                        <div class="item-info">
+                            <h3>${reward.title}</h3>
+                            <p>${reward.desc}</p>
+                        </div>
+                        <span class="points-tag">${reward.cost} pts</span>
+                    </div>
+                    <div class="card-row" style="margin-top: 10px; justify-content: flex-end;">
+                        <button ${!canAfford ? 'disabled' : ''} onclick="redeemReward('${reward.title}', ${reward.cost})">
+                            🎁 Redeem
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Action Handlers
+        window.handleImageUpload = function(taskId) {
+            const fileInput = document.getElementById(`file-${taskId}`);
+            const preview = document.getElementById(`preview-${taskId}`);
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    // Save image string temporarily
+                    localStorage.setItem(`img_${taskId}`, e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.completeTask = function(taskId, taskPoints) {
+            if (!completedTasks.includes(taskId)) {
+                // If it's an upload task, ensure they uploaded something
+                const task = tasks.find(t => t.id === taskId);
+                if (task.type === 'upload' && !localStorage.getItem(`img_${taskId}`)) {
+                    alert('Please upload a photo first!');
+                    return;
+                }
+
+                points += taskPoints;
+                completedTasks.push(taskId);
+                localStorage.setItem('completed_tasks', JSON.stringify(completedTasks));
+                
+                updatePointsDisplay();
+                renderTasks();
+            }
+        }
+
+        window.redeemReward = function(rewardTitle, cost) {
+            if (points >= cost) {
+                points -= cost;
+                updatePointsDisplay();
+                alert(`🎉 Yay! You redeemed [${rewardTitle}]. Take a screenshot and send it to your fiancé!`);
+            }
+        }
+
+        // App Initialization
+        updatePointsDisplay();
+        renderTasks();
+    </script>
+</body>
+</html>
+l
