@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Daily Quest 💖</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Premium Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,600;1,800&display=swap" rel="stylesheet">
     <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary: #ff4757;
-            --primary-light: #ff78ac;
-            --secondary: #ffa502;
-            --text: #1e293b;
-            --text-muted: #64748b;
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.6);
+            --romance-primary: #ff3860;
+            --romance-glow: rgba(255, 56, 96, 0.35);
+            --gold-accent: #f59e0b;
+            --velvet-text: #1e1b4b;
+            --muted-rose: #881337;
+            --glass-card: rgba(255, 241, 242, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.7);
         }
 
         * {
@@ -26,19 +26,19 @@
         }
 
         body {
-            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: var(--text);
+            background: linear-gradient(-45deg, #ffe4e6, #fbcfe8, #f472b6, #ffe4e6);
+            background-size: 300% 300%;
+            animation: romanticFlow 18s ease infinite;
+            color: var(--velvet-text);
             margin: 0;
-            padding: 10px 10px 90px 10px;
+            padding: 15px 15px 95px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
 
-        @keyframes gradientBG {
+        @keyframes romanticFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
@@ -46,112 +46,128 @@
 
         header {
             text-align: center;
-            margin: 20px 0 15px 0;
+            margin: 25px 0 10px 0;
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
         }
 
         header h1 {
-            margin: 0 0 4px 0;
-            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
             font-weight: 800;
-            background: linear-gradient(135deg, #e11d48, #be123c);
+            margin: 0 0 6px 0;
+            font-size: 2.3rem;
+            background: linear-gradient(135deg, #9f1239, #be123c, #e11d48);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(225, 29, 72, 0.05);
         }
 
         header p {
             margin: 0;
-            font-size: 0.9rem;
-            color: #475569;
+            font-size: 0.95rem;
+            color: var(--muted-rose);
             font-weight: 600;
+            letter-spacing: 0.3px;
         }
 
+        /* Glowmorphic Heart Score Widget */
         .score-board {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
-            padding: 12px 35px;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(225, 29, 72, 0.15);
-            margin: 15px 0;
+            padding: 14px 40px;
+            border-radius: 40px;
+            box-shadow: 0 15px 35px var(--romance-glow), inset 0 2px 4px rgba(255,255,255,0.8);
+            margin: 20px 0;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            animation: gentleHeartbeat 2.5s ease-in-out infinite;
+        }
+
+        @keyframes gentleHeartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); box-shadow: 0 18px 40px rgba(255, 56, 96, 0.45); }
         }
 
         .score-label {
             font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-muted);
+            font-weight: 800;
+            color: var(--muted-rose);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
         .score-val {
-            font-size: 1.8rem;
+            font-size: 2.1rem;
             font-weight: 800;
-            color: #e11d48;
+            color: var(--romance-primary);
+            text-shadow: 0 2px 8px rgba(255, 56, 96, 0.2);
         }
 
         .app-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
         }
 
         .app-page {
             display: none;
-            animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            animation: softSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .app-page.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes softSlideUp {
+            from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding: 0 5px;
+            margin-bottom: 18px;
+            padding: 0 6px;
         }
 
         .section-header h2 {
-            font-size: 1.25rem;
-            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.45rem;
+            font-weight: 700;
             margin: 0;
-            color: #0f172a;
+            color: #4c0519;
         }
 
+        /* Frosted Romance Cards */
         .card-item {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: var(--glass-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 18px;
-            margin-bottom: 14px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.03);
-            transition: all 0.3s ease;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 30px rgba(159, 18, 57, 0.04);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .card-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-            background: rgba(255, 255, 255, 0.55);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(159, 18, 57, 0.08);
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(255, 56, 96, 0.2);
         }
 
         .card-body {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 12px;
+            gap: 14px;
         }
 
         .item-info {
@@ -160,40 +176,49 @@
 
         .item-info h3 {
             margin: 0 0 6px 0;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             font-weight: 700;
+            color: #4c0519;
             line-height: 1.4;
         }
 
         .item-info p {
-            margin: 0 0 8px 0;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.4;
+            margin: 0 0 10px 0;
+            font-size: 0.85rem;
+            color: #881337;
+            line-height: 1.45;
         }
 
         .points-badge {
             background: #ffe4e6;
-            color: #e11d48;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            color: var(--romance-primary);
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 0.78rem;
             font-weight: 700;
             display: inline-block;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 56, 96, 0.1);
         }
 
+        /* Smooth Velvet Buttons */
         button {
             font-family: inherit;
-            background: linear-gradient(135deg, #e11d48, #ff4757);
+            background: linear-gradient(135deg, #ff3860, #e11d48);
             color: white;
             border: none;
-            padding: 10px 16px;
-            border-radius: 16px;
+            padding: 11px 18px;
+            border-radius: 18px;
             cursor: pointer;
             font-weight: 700;
             font-size: 0.85rem;
-            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 16px var(--romance-glow);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #e11d48, #be123c);
+            box-shadow: 0 8px 20px rgba(225, 29, 72, 0.4);
         }
 
         button:active:not(:disabled) {
@@ -201,59 +226,65 @@
         }
 
         button:disabled {
-            background: rgba(0,0,0,0.06);
-            color: rgba(0,0,0,0.25);
+            background: rgba(244, 63, 94, 0.08);
+            color: rgba(159, 18, 57, 0.3);
             box-shadow: none;
             cursor: not-allowed;
+            border: 1px solid rgba(159, 18, 57, 0.05);
         }
 
         .btn-reset {
-            background: rgba(15, 23, 42, 0.08);
-            color: #0f172a;
-            font-size: 0.75rem;
-            padding: 6px 12px;
-            border-radius: 14px;
+            background: rgba(159, 18, 57, 0.06);
+            color: #9f1239;
+            font-size: 0.78rem;
+            padding: 7px 14px;
+            border-radius: 16px;
             box-shadow: none;
+            font-weight: 600;
         }
+        .btn-reset:hover { background: rgba(159, 18, 57, 0.12); }
 
+        /* Integrated Text Area UI Box */
         .text-response-container {
-            margin-top: 12px;
+            margin-top: 14px;
             width: 100%;
         }
 
         .love-text-box {
             width: 100%;
-            height: 75px;
-            padding: 12px;
-            border-radius: 16px;
-            border: 1px solid rgba(225, 29, 72, 0.2);
+            height: 80px;
+            padding: 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 56, 96, 0.2);
             background: rgba(255, 255, 255, 0.6);
             font-family: inherit;
-            font-size: 0.85rem;
-            color: var(--text);
+            font-size: 0.88rem;
+            color: var(--velvet-text);
             resize: none;
             outline: none;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .love-text-box:focus {
-            border-color: #e11d48;
+            border-color: var(--romance-primary);
             background: white;
-            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+            box-shadow: 0 0 0 4px rgba(255, 56, 96, 0.12);
         }
 
         .saved-response-box {
-            margin-top: 10px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.8);
-            border-left: 4px solid var(--primary);
-            border-radius: 4px 16px 16px 4px;
-            font-size: 0.85rem;
+            margin-top: 12px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.85);
+            border-left: 4px solid var(--romance-primary);
+            border-radius: 6px 20px 20px 6px;
+            font-size: 0.88rem;
             font-style: italic;
-            color: #475569;
-            line-height: 1.4;
+            color: #4c0519;
+            line-height: 1.5;
+            box-shadow: 0 4px 15px rgba(159, 18, 57, 0.02);
         }
 
+        /* Immersive Picture Drop Zone UI */
         .upload-container {
             margin-top: 14px;
         }
@@ -264,48 +295,50 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 18px;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.4);
-            border: 2px dashed rgba(225, 29, 72, 0.3);
-            border-radius: 16px;
-            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.45);
+            border: 2px dashed rgba(255, 56, 96, 0.25);
+            border-radius: 20px;
+            font-size: 0.82rem;
             font-weight: 600;
-            color: #475569;
-            transition: all 0.2s;
+            color: #881337;
+            transition: all 0.25s;
         }
         .file-drop-zone:hover {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: #e11d48;
+            background: rgba(255, 255, 255, 0.75);
+            border-color: var(--romance-primary);
         }
 
         .preview-img {
             width: 100%;
-            max-height: 250px;
+            max-height: 260px;
             object-fit: cover;
-            border-radius: 16px;
-            margin-top: 12px;
-            border: 3px solid white;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-radius: 20px;
+            margin-top: 14px;
+            border: 4px solid white;
+            box-shadow: 0 10px 30px rgba(159, 18, 57, 0.12);
             display: none;
+            animation: softSlideUp 0.4s ease;
         }
 
+        /* Floating Nav Shell Bar */
         .bottom-nav {
             position: fixed;
-            bottom: 20px;
+            bottom: 22px;
             left: 50%;
             transform: translateX(-50%);
             width: calc(100% - 30px);
-            max-width: 450px;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 28px;
-            padding: 8px;
+            max-width: 440px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 32px;
+            padding: 6px;
             display: flex;
             justify-content: space-around;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 15px 45px rgba(159, 18, 57, 0.15);
             z-index: 1000;
         }
 
@@ -315,43 +348,47 @@
             align-items: center;
             background: none;
             border: none;
-            color: var(--text-muted);
-            padding: 8px 20px;
+            color: #9f1239;
+            opacity: 0.55;
+            padding: 10px 22px;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             cursor: pointer;
-            border-radius: 20px;
+            border-radius: 24px;
             box-shadow: none;
-            transition: all 0.2s ease;
-            gap: 2px;
+            transition: all 0.3s ease;
+            gap: 3px;
         }
 
-        .nav-item span.icon { font-size: 1.25rem; }
+        .nav-item span.icon { font-size: 1.3rem; }
 
         .nav-item.active {
             background: white;
-            color: #e11d48;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            color: var(--romance-primary);
+            opacity: 1;
+            box-shadow: 0 6px 16px rgba(159, 18, 57, 0.06);
         }
 
+        /* Activity Timelines */
         .feed-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
         .feed-card {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.55);
             border: 1px solid var(--glass-border);
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 0.85rem;
+            padding: 14px 18px;
+            border-radius: 20px;
+            font-size: 0.88rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
         }
         .feed-card.complete { border-left: 4px solid #10b981; }
-        .feed-card.redeem { border-left: 4px solid var(--secondary); }
-        .feed-time { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .feed-card.redeem { border-left: 4px solid var(--gold-accent); }
+        .feed-time { font-size: 0.75rem; color: #9f1239; font-weight: 600; opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -367,33 +404,34 @@
 
     <div class="app-container">
         
-        <!-- PAGE 1: TASKS -->
+        <!-- MODULE PAGE 1: TASKS -->
         <div id="page-tasks" class="app-page active">
             <div class="section-header">
                 <h2>Daily Goals</h2>
                 <button class="btn-reset" id="admin-reset-btn">🔄 New Day</button>
             </div>
-            <div id="tasks-list"><!-- Injected --></div>
+            <div id="tasks-list"><!-- Dynamic Injection --></div>
         </div>
 
-        <!-- PAGE 2: REWARDS -->
+        <!-- MODULE PAGE 2: REWARDS -->
         <div id="page-rewards" class="app-page">
             <div class="section-header">
                 <h2>Rewards Shop</h2>
             </div>
-            <div id="rewards-list"><!-- Injected --></div>
+            <div id="rewards-list"><!-- Dynamic Injection --></div>
         </div>
 
-        <!-- PAGE 3: HISTORY -->
+        <!-- MODULE PAGE 3: HISTORY -->
         <div id="page-history" class="app-page">
             <div class="section-header">
                 <h2>Activity Timeline</h2>
             </div>
-            <div id="feed-list" class="feed-container"><!-- Injected --></div>
+            <div id="feed-list" class="feed-container"><!-- Dynamic Injection --></div>
         </div>
 
     </div>
 
+    <!-- Sticky Tab Navigation Deck -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('page-tasks', this)">
             <span class="icon">✨</span>
@@ -413,24 +451,24 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ⚠️ PASTE YOUR FIREBASE CONFIG OBJECT HERE ⚠️
+        // Transmitted Config Credentials
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDEtBDUm2kPHwYh_tOxSF5OY-0esUoOBcs",
+            authDomain: "task-quest-numair.firebaseapp.com",
+            projectId: "task-quest-numair",
+            storageBucket: "task-quest-numair.firebasestorage.app",
+            messagingSenderId: "389105697902",
+            appId: "1:389105697902:web:e3c644eba49704157ed27f",
+            measurementId: "G-V5RHL2N8Z2"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Updated Configuration Tasks Block
         const tasks = [
             { id: 'task1', title: 'Send a sweet morning text ☀️', points: 10, type: 'standard' },
             { id: 'task2', title: 'Upload a cute selfie of today 🤳', points: 30, type: 'upload' },
-            { id: 'task3', title: 'Send me a random useless fact or a terrible dad joke 🤓', points: 20, type: 'text-input' },
+            { id: 'task3', title: 'Tell me one thing you love about me today 🥰', points: 20, type: 'text-input' },
             { id: 'task4', title: 'Let me choose your outfit for our next date night 👗👠', points: 40, type: 'standard' }
         ];
 
@@ -479,8 +517,8 @@
                         extraHTML = `
                             <div class="upload-container">
                                 <label class="file-drop-zone" for="file-${task.id}">
-                                    <span style="font-size:1.4rem; margin-bottom:4px;">📸</span>
-                                    <span>Tap to upload today's photo</span>
+                                    <span style="font-size:1.5rem; margin-bottom:4px;">📸</span>
+                                    <span>Tap to choose today's memory</span>
                                     <input type="file" id="file-${task.id}" accept="image/*">
                                 </label>
                                 <img id="preview-${task.id}" class="preview-img" />
@@ -493,13 +531,13 @@
                     if (!isCompleted) {
                         extraHTML = `
                             <div class="text-response-container">
-                                <textarea id="text-input-${task.id}" class="love-text-box" placeholder="Type it here... 😂💡"></textarea>
+                                <textarea id="text-input-${task.id}" class="love-text-box" placeholder="Write it here... ❤️"></textarea>
                             </div>
                         `;
                     } else {
                         extraHTML = `
                             <div class="saved-response-box">
-                                "💬 Share: ${taskStatus}"
+                                "${taskStatus}"
                             </div>
                         `;
                     }
@@ -512,7 +550,7 @@
                             <span class="points-badge">+${task.points} PTS</span>
                         </div>
                         <button id="btn-${task.id}" ${isCompleted ? 'disabled' : ''}>
-                            ${isCompleted ? '✅ Done' : 'Complete'}
+                            ${isCompleted ? '💖 Saved' : 'Complete'}
                         </button>
                     </div>
                     ${extraHTML}
@@ -539,9 +577,9 @@
                         <div class="item-info">
                             <h3>${reward.title}</h3>
                             <p>${reward.desc}</p>
-                            <span class="points-badge" style="background:#fef3c7; color:#d97706;">${reward.cost} PTS</span>
+                            <span class="points-badge" style="background:#fef3c7; color:#d97706; border-color: rgba(217,119,6,0.1);">${reward.cost} PTS</span>
                         </div>
-                        <button ${!canAfford ? 'disabled' : ''} id="rew-${reward.id}" style="background:${canAfford ? 'linear-gradient(135deg, #d97706, #f59e0b)' : ''}; box-shadow: ${canAfford ? '0 4px 12px rgba(217,119,6,0.2)' : ''};">
+                        <button ${!canAfford ? 'disabled' : ''} id="rew-${reward.id}" style="background:${canAfford ? 'linear-gradient(135deg, #d97706, #f59e0b)' : ''}; box-shadow: ${canAfford ? '0 6px 16px rgba(217,119,6,0.25)' : ''};">
                             🎁 Claim
                         </button>
                     </div>
@@ -556,12 +594,12 @@
             if(appData.logs && appData.logs.length > 0) {
                 feedList.innerHTML = appData.logs.map(log => `
                     <div class="feed-card ${log.type || 'complete'}">
-                        <span style="font-weight:600;">${log.text}</span>
+                        <span style="font-weight:600; color: #4c0519;">${log.text}</span>
                         <span class="feed-time">${log.time}</span>
                     </div>
                 `).join('');
             } else {
-                feedList.innerHTML = `<div class="feed-card" style="justify-content:center; color:var(--text-muted);">No activity logged yet! ✨</div>`;
+                feedList.innerHTML = `<div class="feed-card" style="justify-content:center; color:#881337; opacity:0.7;">No milestones logged yet! ✨</div>`;
             }
         }
 
@@ -584,11 +622,11 @@
 
         async function completeTask(task, taskPoints, type) {
             let taskPayloadValue = true;
-            let customLogText = `✅ Completed "${task.title}"`;
+            let customLogText = `✨ Completed "${task.title}"`;
 
             if (type === 'upload') {
                 if (!temporaryImageString) {
-                    alert('Please choose a cute picture first!');
+                    alert('Please choose a cute memory first!');
                     return;
                 }
                 taskPayloadValue = temporaryImageString;
@@ -597,11 +635,11 @@
                 const inputElement = document.getElementById(`text-input-${task.id}`);
                 const userText = inputElement.value.trim();
                 if (!userText) {
-                    alert('Please type out your joke or fact! 😂');
+                    alert('Please write down your note first! 🥰');
                     return;
                 }
                 taskPayloadValue = userText;
-                customLogText = `💡 She dropped a note: "${userText}"`;
+                customLogText = `❤️ Shared: "${userText}"`;
             }
 
             const updatedCompleted = { ...(appData.completedTasks || {}) };
@@ -611,7 +649,8 @@
             const newLog = { text: customLogText, time: timeString, type: 'complete' };
             const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 25);
 
-            confetti({ particleCount: 140, spread: 60, origin: { y: 0.7 } });
+            // Romantic soft pink burst celebration
+            confetti({ particleCount: 140, spread: 65, colors: ['#ff3860', '#f472b6', '#fff1f2'], origin: { y: 0.7 } });
 
             await updateDoc(docRef, {
                 points: (appData.points || 0) + taskPoints,
@@ -623,10 +662,10 @@
         async function redeemReward(rewardTitle, cost) {
             if (appData.points >= cost) {
                 const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const newLog = { text: `🎁 Redeemed "${rewardTitle}"`, time: timeString, type: 'redeem' };
+                const newLog = { text: `🌹 Claimed "${rewardTitle}"`, time: timeString, type: 'redeem' };
                 const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 25);
 
-                confetti({ particleCount: 180, spread: 100, colors: ['#ff4757', '#ffa502', '#ffffff'] });
+                confetti({ particleCount: 180, spread: 100, colors: ['#ff3860', '#f59e0b', '#ffffff'] });
 
                 await updateDoc(docRef, {
                     points: appData.points - cost,
