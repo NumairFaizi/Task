@@ -4,193 +4,272 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Daily Quest 💖</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary-color: #ff6b81;
-            --secondary-color: #ffa502;
-            --background-color: #fff5f5;
-            --card-background: #ffffff;
-            --text-color: #2f3542;
+            --primary: #ff4757;
+            --primary-hover: #e84118;
+            --secondary: #ffa502;
+            --bg-gradient: linear-gradient(135deg, #ffeaa7 0%, #ff78ac 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text: #2f3542;
+            --text-muted: #747d8c;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
+        header h1 {
+            margin: 10px 0 5px 0;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            margin: 0 0 15px 0;
+            opacity: 0.9;
+            font-weight: 500;
         }
 
         .score-board {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            padding: 15px 45px;
             border-radius: 50px;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
-            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: 800;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
+        .full-width-section {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .full-width-section { grid-column: span 1; }
         }
 
         .section {
-            background: var(--card-background);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+            backdrop-filter: blur(5px);
         }
 
         h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid #ffe0e0;
-            padding-bottom: 10px;
+            color: var(--primary);
             margin-top: 0;
+            font-size: 1.4rem;
+            border-bottom: 2px dashed #ffccd2;
+            padding-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .card-item {
-            display: flex;
-            flex-direction: column;
-            background: #fdfdfd;
-            border: 1px solid #f0f0f0;
-            border-radius: 10px;
-            padding: 15px;
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
             margin-bottom: 15px;
-            transition: transform 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #f1f2f6;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .card-item:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
         }
 
         .card-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
         .item-info h3 {
-            margin: 0 0 5px 0;
+            margin: 0 0 4px 0;
             font-size: 16px;
+            font-weight: 600;
         }
 
         .item-info p {
             margin: 0;
-            font-size: 14px;
-            color: #747d8c;
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
         .points-tag {
-            background: #ffe0e6;
-            color: var(--primary-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+            background: #fff0f2;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
         button {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary), #ff6b81);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 10px 18px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.2);
+            transition: all 0.2s;
         }
 
-        button:hover {
-            background-color: #ff4757;
+        button:hover:not(:disabled) {
+            transform: scale(1.03);
+            box-shadow: 0 6px 14px rgba(255, 71, 87, 0.3);
         }
 
         button:disabled {
-            background-color: #ced6e0;
+            background: #dcdde1;
+            color: #a4b0be;
+            box-shadow: none;
             cursor: not-allowed;
         }
 
-        .upload-btn-wrapper {
-            margin-top: 10px;
+        .btn-reset {
+            background: #2f3542;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            box-shadow: none;
         }
 
-        .upload-btn-wrapper input[type=file] {
-            display: none;
-        }
+        .upload-btn-wrapper { margin-top: 12px; }
+        .upload-btn-wrapper input[type=file] { display: none; }
 
         .custom-file-upload {
             display: inline-block;
-            padding: 6px 12px;
+            padding: 8px 16px;
             cursor: pointer;
             background: #f1f2f6;
-            border: 1px dashed var(--primary-color);
-            border-radius: 5px;
+            border: 2px dashed var(--primary);
+            border-radius: 10px;
             font-size: 13px;
-            text-align: center;
+            font-weight: 600;
+            transition: background 0.2s;
         }
+        .custom-file-upload:hover { background: #ffebee; }
 
         .preview-img {
             max-width: 100%;
-            max-height: 150px;
-            border-radius: 8px;
-            margin-top: 10px;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-top: 12px;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: none;
         }
+
+        /* Feed/Log System Styles */
+        .feed-list {
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .feed-item {
+            font-size: 13px;
+            padding: 8px 12px;
+            border-left: 3px solid var(--secondary);
+            background: #f8f9fa;
+            margin-bottom: 8px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .feed-time { color: var(--text-muted); font-size: 11px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>💖 Days with My Fiancée 💖</h1>
-        <p>Complete daily tasks, earn points, and pamper yourself!</p>
-        <div class="score-board">✨ <span id="total-points">0</span> Points ✨</div>
+        <h1>💖 Our Quest Hub 💖</h1>
+        <p>Complete your tasks, stack your points, get pampered!</p>
+        <div class="score-board">✨ <span id="total-points">0</span> pts ✨</div>
     </header>
 
     <div class="container">
-        <!-- TASKS SECTION -->
         <div class="section">
-            <h2>Today's Tasks</h2>
-            <div id="tasks-container">
-                <!-- Tasks will be injected by JavaScript -->
-            </div>
+            <h2>Today's Tasks <button class="btn-reset" id="admin-reset-btn">🔄 Reset Day</button></h2>
+            <div id="tasks-container">Loading tasks...</div>
         </div>
 
-        <!-- REWARDS SECTION -->
         <div class="section">
             <h2>Rewards Shop</h2>
-            <div id="rewards-container">
-                <!-- Rewards will be injected by JavaScript -->
+            <div id="rewards-container">Loading shop...</div>
+        </div>
+
+        <div class="section full-width-section">
+            <h2>Activity Log 💞</h2>
+            <div class="feed-list" id="feed-container">
+                <div class="feed-item">No updates yet! Start your adventure.</div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Data Configuration
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ⚠️ PASTE YOUR FIREBASE CONFIG OBJECT HERE ⚠️
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         const tasks = [
             { id: 'task1', title: 'Drink 8 glasses of water 💧', points: 10, type: 'standard' },
             { id: 'task2', title: 'Upload a cute selfie of today 🤳', points: 30, type: 'upload' },
@@ -205,42 +284,50 @@
             { id: 'reward4', title: 'Grand Dinner Date 👑', cost: 300, desc: 'Your choice of restaurant, dressed to the nines.' }
         ];
 
-        // State Management
-        let points = parseInt(localStorage.getItem('fiancee_points')) || 0;
-        let completedTasks = JSON.parse(localStorage.getItem('completed_tasks')) || [];
+        let appData = {
+            points: 0,
+            completedTasks: {},
+            logs: []
+        };
 
-        // Initialize UI
-        function updatePointsDisplay() {
-            document.getElementById('total-points').innerText = points;
-            localStorage.setItem('fiancee_points', points);
-            renderRewards(); // Re-render rewards to update button disabled states based on points
-        }
+        const docRef = doc(db, "questHub", "sharedState");
 
-        function renderTasks() {
-            const container = document.getElementById('tasks-container');
-            container.innerHTML = '';
+        onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                appData = docSnap.data();
+            } else {
+                setDoc(docRef, appData);
+            }
+            updateUI();
+        });
+
+        function updateUI() {
+            document.getElementById('total-points').innerText = appData.points || 0;
+
+            // Render Tasks
+            const tasksContainer = document.getElementById('tasks-container');
+            tasksContainer.innerHTML = '';
 
             tasks.forEach(task => {
-                const isCompleted = completedTasks.includes(task.id);
+                const taskStatus = appData.completedTasks?.[task.id];
+                const isCompleted = !!taskStatus; 
                 const card = document.createElement('div');
                 card.className = 'card-item';
 
                 let uploadHTML = '';
-                if (task.type === 'upload' && !isCompleted) {
-                    uploadHTML = `
-                        <div class="upload-btn-wrapper">
-                            <label class="custom-file-upload">
-                                <input type="file" id="file-${task.id}" accept="image/*" onchange="handleImageUpload('${task.id}')">
-                                📸 Choose Photo
-                            </label>
-                            <img id="preview-${task.id}" class="preview-img" />
-                        </div>
-                    `;
-                } else if (task.type === 'upload' && isCompleted) {
-                    // Grab saved image preview if it exists in localstorage
-                    const savedImg = localStorage.getItem(`img_${task.id}`);
-                    if(savedImg) {
-                        uploadHTML = `<img src="${savedImg}" class="preview-img" style="display:block;" />`;
+                if (task.type === 'upload') {
+                    if (!isCompleted) {
+                        uploadHTML = `
+                            <div class="upload-btn-wrapper">
+                                <label class="custom-file-upload">
+                                    <input type="file" id="file-${task.id}" accept="image/*">
+                                    📸 Choose Photo
+                                </label>
+                                <img id="preview-${task.id}" class="preview-img" />
+                            </div>
+                        `;
+                    } else {
+                        uploadHTML = `<img src="${taskStatus}" class="preview-img" style="display:block;" />`;
                     }
                 }
 
@@ -248,24 +335,31 @@
                     <div class="card-row">
                         <div class="item-info">
                             <h3>${task.title}</h3>
-                            <span class="points">+${task.points} pts</span>
+                            <span class="points-tag">+${task.points} pts</span>
                         </div>
-                        <button id="btn-${task.id}" ${isCompleted ? 'disabled' : ''} onclick="completeTask('${task.id}', ${task.points})">
+                        <button id="btn-${task.id}" ${isCompleted ? 'disabled' : ''}>
                             ${isCompleted ? '✅ Done' : 'Complete'}
                         </button>
                     </div>
                     ${uploadHTML}
                 `;
-                container.appendChild(card);
-            });
-        }
+                tasksContainer.appendChild(card);
 
-        function renderRewards() {
-            const container = document.getElementById('rewards-container');
-            container.innerHTML = '';
+                if (!isCompleted) {
+                    if (task.type === 'upload') {
+                        card.querySelector(`#file-${task.id}`).addEventListener('change', () => handleImageUpload(task.id));
+                    }
+                    card.querySelector(`#btn-${task.id}`).addEventListener('click', () => completeTask(task, task.points, task.type));
+                }
+            });
+
+            // Render Rewards
+            const rewardsContainer = document.getElementById('rewards-container');
+            rewardsContainer.innerHTML = '';
 
             rewards.forEach(reward => {
-                const canAfford = points >= reward.cost;
+                const currentPoints = appData.points || 0;
+                const canAfford = currentPoints >= reward.cost;
                 const card = document.createElement('div');
                 card.className = 'card-item';
                 card.innerHTML = `
@@ -277,17 +371,35 @@
                         <span class="points-tag">${reward.cost} pts</span>
                     </div>
                     <div class="card-row" style="margin-top: 10px; justify-content: flex-end;">
-                        <button ${!canAfford ? 'disabled' : ''} onclick="redeemReward('${reward.title}', ${reward.cost})">
+                        <button ${!canAfford ? 'disabled' : ''} id="rew-${reward.id}">
                             🎁 Redeem
                         </button>
                     </div>
                 `;
-                container.appendChild(card);
+                rewardsContainer.appendChild(card);
+
+                if (canAfford) {
+                    card.querySelector(`#rew-${reward.id}`).addEventListener('click', () => redeemReward(reward.title, reward.cost));
+                }
             });
+
+            // Render Logs
+            const feedContainer = document.getElementById('feed-container');
+            if(appData.logs && appData.logs.length > 0) {
+                feedContainer.innerHTML = appData.logs.map(log => `
+                    <div class="feed-item">
+                        <span>${log.text}</span>
+                        <span class="feed-time">${log.time}</span>
+                    </div>
+                `).join('');
+            } else {
+                feedContainer.innerHTML = `<div class="feed-item">No updates yet! Start your adventure.</div>`;
+            }
         }
 
-        // Action Handlers
-        window.handleImageUpload = function(taskId) {
+        let temporaryImageString = "";
+
+        function handleImageUpload(taskId) {
             const fileInput = document.getElementById(`file-${taskId}`);
             const preview = document.getElementById(`preview-${taskId}`);
             const file = fileInput.files[0];
@@ -297,43 +409,64 @@
                 reader.onload = function(e) {
                     preview.src = e.target.result;
                     preview.style.display = 'block';
-                    // Save image string temporarily
-                    localStorage.setItem(`img_${taskId}`, e.target.result);
+                    temporaryImageString = e.target.result; 
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        window.completeTask = function(taskId, taskPoints) {
-            if (!completedTasks.includes(taskId)) {
-                // If it's an upload task, ensure they uploaded something
-                const task = tasks.find(t => t.id === taskId);
-                if (task.type === 'upload' && !localStorage.getItem(`img_${taskId}`)) {
-                    alert('Please upload a photo first!');
+        async function completeTask(task, taskPoints, type) {
+            let taskPayloadValue = true;
+
+            if (type === 'upload') {
+                if (!temporaryImageString) {
+                    alert('Please select and upload a photo first!');
                     return;
                 }
+                taskPayloadValue = temporaryImageString;
+                temporaryImageString = "";
+            }
 
-                points += taskPoints;
-                completedTasks.push(taskId);
-                localStorage.setItem('completed_tasks', JSON.stringify(completedTasks));
-                
-                updatePointsDisplay();
-                renderTasks();
+            const updatedCompleted = { ...(appData.completedTasks || {}) };
+            updatedCompleted[task.id] = taskPayloadValue;
+
+            const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const newLog = { text: `✅ Completed: ${task.title}`, time: timeString };
+            const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 20); // Keep last 20 logs
+
+            confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+
+            await updateDoc(docRef, {
+                points: (appData.points || 0) + taskPoints,
+                completedTasks: updatedCompleted,
+                logs: updatedLogs
+            });
+        }
+
+        async function redeemReward(rewardTitle, cost) {
+            if (appData.points >= cost) {
+                const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const newLog = { text: `🎁 Redeemed: ${rewardTitle}`, time: timeString };
+                const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 20);
+
+                confetti({ particleCount: 150, spread: 80, colors: ['#ff4757', '#ffa502', '#ffffff'] });
+
+                await updateDoc(docRef, {
+                    points: appData.points - cost,
+                    logs: updatedLogs
+                });
+                alert(`🎉 Success! You redeemed: "${rewardTitle}"!`);
             }
         }
 
-        window.redeemReward = function(rewardTitle, cost) {
-            if (points >= cost) {
-                points -= cost;
-                updatePointsDisplay();
-                alert(`🎉 Yay! You redeemed [${rewardTitle}]. Take a screenshot and send it to your fiancé!`);
+        // Reset Day Trigger (Clears tasks, keeps points intact!)
+        document.getElementById('admin-reset-btn').addEventListener('click', async () => {
+            if(confirm("Are you sure you want to reset all tasks for the day? (Points will not be touched!)")) {
+                await updateDoc(docRef, {
+                    completedTasks: {}
+                });
             }
-        }
-
-        // App Initialization
-        updatePointsDisplay();
-        renderTasks();
+        });
     </script>
 </body>
 </html>
-l
