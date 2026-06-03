@@ -71,7 +71,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* Glowmorphic Heart Score Widget */
         .score-board {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(25px);
@@ -143,7 +142,6 @@
             color: #4c0519;
         }
 
-        /* Frosted Romance Cards */
         .card-item {
             background: var(--glass-card);
             backdrop-filter: blur(20px);
@@ -201,7 +199,6 @@
             border: 1px solid rgba(255, 56, 96, 0.1);
         }
 
-        /* Smooth Velvet Buttons */
         button {
             font-family: inherit;
             background: linear-gradient(135deg, #ff3860, #e11d48);
@@ -244,7 +241,6 @@
         }
         .btn-reset:hover { background: rgba(159, 18, 57, 0.12); }
 
-        /* Integrated Text Area UI Box */
         .text-response-container {
             margin-top: 14px;
             width: 100%;
@@ -284,7 +280,6 @@
             box-shadow: 0 4px 15px rgba(159, 18, 57, 0.02);
         }
 
-        /* Immersive Picture Drop Zone UI */
         .upload-container {
             margin-top: 14px;
         }
@@ -322,7 +317,6 @@
             animation: softSlideUp 0.4s ease;
         }
 
-        /* Floating Nav Shell Bar */
         .bottom-nav {
             position: fixed;
             bottom: 22px;
@@ -369,7 +363,6 @@
             box-shadow: 0 6px 16px rgba(159, 18, 57, 0.06);
         }
 
-        /* Activity Timelines */
         .feed-container {
             display: flex;
             flex-direction: column;
@@ -404,34 +397,33 @@
 
     <div class="app-container">
         
-        <!-- MODULE PAGE 1: TASKS -->
+        <!-- PAGE 1: TASKS -->
         <div id="page-tasks" class="app-page active">
             <div class="section-header">
                 <h2>Daily Goals</h2>
                 <button class="btn-reset" id="admin-reset-btn">🔄 New Day</button>
             </div>
-            <div id="tasks-list"><!-- Dynamic Injection --></div>
+            <div id="tasks-list"><!-- Injected --></div>
         </div>
 
-        <!-- MODULE PAGE 2: REWARDS -->
+        <!-- PAGE 2: REWARDS -->
         <div id="page-rewards" class="app-page">
             <div class="section-header">
                 <h2>Rewards Shop</h2>
             </div>
-            <div id="rewards-list"><!-- Dynamic Injection --></div>
+            <div id="rewards-list"><!-- Injected --></div>
         </div>
 
-        <!-- MODULE PAGE 3: HISTORY -->
+        <!-- PAGE 3: HISTORY -->
         <div id="page-history" class="app-page">
             <div class="section-header">
                 <h2>Activity Timeline</h2>
             </div>
-            <div id="feed-list" class="feed-container"><!-- Dynamic Injection --></div>
+            <div id="feed-list" class="feed-container"><!-- Injected --></div>
         </div>
 
     </div>
 
-    <!-- Sticky Tab Navigation Deck -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('page-tasks', this)">
             <span class="icon">✨</span>
@@ -451,7 +443,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Transmitted Config Credentials
         const firebaseConfig = {
             apiKey: "AIzaSyDEtBDUm2kPHwYh_tOxSF5OY-0esUoOBcs",
             authDomain: "task-quest-numair.firebaseapp.com",
@@ -472,11 +463,13 @@
             { id: 'task4', title: 'Let me choose your outfit for our next date night 👗👠', points: 40, type: 'standard' }
         ];
 
+        // Updated array incorporating the customized choices for 2, 4, and 5
         const rewards = [
-            { id: 'reward1', title: 'Ice Cream Date 🍦', cost: 50, desc: 'Any flavor, any time this week!' },
-            { id: 'reward2', title: 'Foot Massage 🦶', cost: 100, desc: 'A relaxing 30-minute foot rub.' },
-            { id: 'reward3', title: 'Skip Chore Pass 🎫', cost: 150, desc: 'Pass a chore of your choice to me.' },
-            { id: 'reward4', title: 'Grand Dinner Date 👑', cost: 300, desc: 'Your choice of restaurant, dressed to the nines.' }
+            { id: 'reward1', title: '100 Rs in next Eidi ✉️', cost: 30, desc: 'A special bonus addition to your upcoming Eidi pouch!' },
+            { id: 'reward2', title: 'Midnight Drive + Late Night Chai 🚗☕', cost: 50, desc: 'A quiet, winding cruise through the city lights, ending with a hot cup of tea together.' },
+            { id: 'reward3', title: 'Buy a Ring 💍', cost: 100, desc: 'Pick out a gorgeous ring of your choice to add to your collection.' },
+            { id: 'reward4', title: 'Weekend Getaway Planning Pass 🗺️✈️', cost: 150, desc: 'Sit back completely. I will plan, book, and handle all itineraries for our next short holiday together.' },
+            { id: 'reward5', title: 'A Custom Premium Gift Package Box 🎁👑', cost: 300, desc: 'Unlock a beautifully curated gift collection box containing premium items you have had your eye on.' }
         ];
 
         let appData = { points: 0, completedTasks: {}, logs: [] };
@@ -649,7 +642,6 @@
             const newLog = { text: customLogText, time: timeString, type: 'complete' };
             const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 25);
 
-            // Romantic soft pink burst celebration
             confetti({ particleCount: 140, spread: 65, colors: ['#ff3860', '#f472b6', '#fff1f2'], origin: { y: 0.7 } });
 
             await updateDoc(docRef, {
