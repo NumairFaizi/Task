@@ -4,25 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Daily Quest 💖</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary: #ff4757;
-            --primary-hover: #e84118;
-            --secondary: #ffa502;
-            --bg-gradient: linear-gradient(135deg, #ffeaa7 0%, #ff78ac 100%);
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text: #2f3542;
-            --text-muted: #747d8c;
+            --bg-dark: #0f111a;
+            --card-glass: rgba(22, 28, 45, 0.6);
+            --border-glass: rgba(255, 255, 255, 0.05);
+            --neon-pink: #ff4757;
+            --neon-purple: #8b5cf6;
+            --neon-cyan: #06b6d4;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text);
+            background: linear-gradient(135deg, #090a0f 0%, #121624 50%, #090a0f 100%);
+            color: var(--text-primary);
             margin: 0;
-            padding: 15px;
+            padding: 15px 15px 95px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,265 +39,422 @@
 
         header {
             text-align: center;
-            margin-bottom: 25px;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            margin: 25px 0 10px 0;
+            width: 100%;
+            max-width: 480px;
         }
 
         header h1 {
-            margin: 10px 0 5px 0;
-            font-size: 2.2rem;
+            margin: 0 0 6px 0;
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #ff4757, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
         header p {
-            margin: 0 0 15px 0;
-            opacity: 0.9;
-            font-weight: 500;
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
         }
 
+        /* Video-Style Progress / Balance Header Widget */
         .score-board {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #fff;
-            padding: 15px 45px;
-            border-radius: 50px;
-            font-size: 26px;
-            font-weight: 800;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .full-width-section {
-            grid-column: span 2;
-        }
-
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; }
-            .full-width-section { grid-column: span 1; }
-        }
-
-        .section {
-            background: var(--card-bg);
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 40px;
             border-radius: 24px;
-            padding: 22px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-            backdrop-filter: blur(5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        h2 {
-            color: var(--primary);
-            margin-top: 0;
-            font-size: 1.4rem;
-            border-bottom: 2px dashed #ffccd2;
-            padding-bottom: 12px;
+        .score-label {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .score-val {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .app-page {
+            display: none;
+            animation: appSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .app-page.active {
+            display: block;
+        }
+
+        @keyframes appSlideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
         }
 
+        .section-header h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        /* High-Fidelity Cyber Cards */
         .card-item {
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            border: 1px solid #f1f2f6;
-            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
         }
 
         .card-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(30, 41, 59, 0.5);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.1);
         }
 
-        .card-row {
+        .card-body {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .item-info {
+            flex: 1;
         }
 
         .item-info h3 {
             margin: 0 0 4px 0;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.4;
         }
 
         .item-info p {
-            margin: 0;
-            font-size: 13px;
-            color: var(--text-muted);
+            margin: 0 0 6px 0;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
         }
 
-        .points-tag {
-            background: #fff0f2;
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 13px;
+        .points-badge {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--neon-cyan);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
             font-weight: 700;
-            white-space: nowrap;
+            display: inline-block;
+            border: 1px solid rgba(6, 182, 212, 0.15);
         }
 
+        /* Styled Interactive Action Buttons */
         button {
-            background: linear-gradient(135deg, var(--primary), #ff6b81);
+            font-family: inherit;
+            background: linear-gradient(135deg, var(--neon-purple), #6366f1);
             color: white;
             border: none;
-            padding: 10px 18px;
-            border-radius: 12px;
+            padding: 9px 16px;
+            border-radius: 14px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.2);
-            transition: all 0.2s;
+            font-size: 0.82rem;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         button:hover:not(:disabled) {
-            transform: scale(1.03);
-            box-shadow: 0 6px 14px rgba(255, 71, 87, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        button:active:not(:disabled) {
+            transform: scale(0.95);
         }
 
         button:disabled {
-            background: #dcdde1;
-            color: #a4b0be;
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.15);
             box-shadow: none;
             cursor: not-allowed;
+            border: 1px solid rgba(255, 255, 255, 0.02);
         }
 
         .btn-reset {
-            background: #2f3542;
-            font-size: 11px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+            font-size: 0.75rem;
             padding: 6px 12px;
-            border-radius: 20px;
+            border-radius: 12px;
             box-shadow: none;
-        }
-
-        .upload-btn-wrapper { margin-top: 12px; }
-        .upload-btn-wrapper input[type=file] { display: none; }
-
-        .custom-file-upload {
-            display: inline-block;
-            padding: 8px 16px;
-            cursor: pointer;
-            background: #f1f2f6;
-            border: 2px dashed var(--primary);
-            border-radius: 10px;
-            font-size: 13px;
             font-weight: 600;
-            transition: background 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .custom-file-upload:hover { background: #ffebee; }
+        .btn-reset:hover { background: rgba(255, 255, 255, 0.08); }
+
+        /* Integrated Custom Forms */
+        .text-response-container {
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .love-text-box {
+            width: 100%;
+            height: 75px;
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(9, 9, 11, 0.5);
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            resize: none;
+            outline: none;
+            transition: all 0.25s;
+        }
+
+        .love-text-box:focus {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+
+        .saved-response-box {
+            margin-top: 10px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--neon-purple);
+            border-radius: 4px 14px 14px 4px;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        /* File Area Modules */
+        .upload-container {
+            margin-top: 12px;
+        }
+        .upload-container input[type=file] { display: none; }
+
+        .file-drop-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.01);
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .file-drop-zone:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--neon-cyan);
+            color: var(--text-primary);
+        }
 
         .preview-img {
-            max-width: 100%;
-            max-height: 220px;
+            width: 100%;
+            max-height: 250px;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 16px;
             margin-top: 12px;
-            border: 2px solid white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             display: none;
         }
 
-        /* Feed/Log System Styles */
-        .feed-list {
-            max-height: 180px;
-            overflow-y: auto;
-            padding-right: 5px;
+        /* Fixed App Screen Nav Shell Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 30px);
+            max-width: 440px;
+            background: rgba(18, 22, 35, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 6px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
         }
-        .feed-item {
-            font-size: 13px;
-            padding: 8px 12px;
-            border-left: 3px solid var(--secondary);
-            background: #f8f9fa;
-            margin-bottom: 8px;
-            border-radius: 0 8px 8px 0;
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 18px;
+            box-shadow: none;
+            transition: all 0.2s ease;
+            gap: 2px;
+        }
+
+        .nav-item span.icon { font-size: 1.2rem; }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--neon-pink);
+        }
+
+        /* Timeline Entries UI Module */
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .feed-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-glass);
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.85rem;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
-        .feed-time { color: var(--text-muted); font-size: 11px; }
+        .feed-card.complete { border-left: 3px solid var(--neon-cyan); }
+        .feed-card.redeem { border-left: 3px solid var(--neon-pink); }
+        .feed-time { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>💖 Our Quest Hub 💖</h1>
-        <p>Complete your tasks, stack your points, get pampered!</p>
-        <div class="score-board">✨ <span id="total-points">0</span> pts ✨</div>
+        <h1>Our Daily Quest</h1>
+        <p>Complete goals, claim custom packages</p>
+        <div class="score-board">
+            <span class="score-label">Balance</span>
+            <span class="score-val" id="total-points">0</span>
+        </div>
     </header>
 
-    <div class="container">
-        <div class="section">
-            <h2>Today's Tasks <button class="btn-reset" id="admin-reset-btn">🔄 Reset Day</button></h2>
-            <div id="tasks-container">Loading tasks...</div>
-        </div>
-
-        <div class="section">
-            <h2>Rewards Shop</h2>
-            <div id="rewards-container">Loading shop...</div>
-        </div>
-
-        <div class="section full-width-section">
-            <h2>Activity Log 💞</h2>
-            <div class="feed-list" id="feed-container">
-                <div class="feed-item">No updates yet! Start your adventure.</div>
+    <div class="app-container">
+        
+        <!-- MODULE: TASKS -->
+        <div id="page-tasks" class="app-page active">
+            <div class="section-header">
+                <h2>Daily Goals</h2>
+                <button class="btn-reset" id="admin-reset-btn">🔄 New Day</button>
             </div>
+            <div id="tasks-list"><!-- Injected --></div>
         </div>
+
+        <!-- MODULE: REWARDS -->
+        <div id="page-rewards" class="app-page">
+            <div class="section-header">
+                <h2>Rewards Shop</h2>
+            </div>
+            <div id="rewards-list"><!-- Injected --></div>
+        </div>
+
+        <!-- MODULE: TIMELINE -->
+        <div id="page-history" class="app-page">
+            <div class="section-header">
+                <h2>Activity Timeline</h2>
+            </div>
+            <div id="feed-list" class="feed-container"><!-- Injected --></div>
+        </div>
+
     </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('page-tasks', this)">
+            <span class="icon">✨</span>
+            <span>Tasks</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('page-rewards', this)">
+            <span class="icon">🎁</span>
+            <span>Shop</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('page-history', this)">
+            <span class="icon">📜</span>
+            <span>History</span>
+        </button>
+    </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ⚠️ PASTE YOUR FIREBASE CONFIG OBJECT HERE ⚠️
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDEtBDUm2kPHwYh_tOxSF5OY-0esUoOBcs",
+            authDomain: "task-quest-numair.firebaseapp.com",
+            projectId: "task-quest-numair",
+            storageBucket: "task-quest-numair.firebasestorage.app",
+            messagingSenderId: "389105697902",
+            appId: "1:389105697902:web:e3c644eba49704157ed27f",
+            measurementId: "G-V5RHL2N8Z2"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         const tasks = [
-            { id: 'task1', title: 'Drink 8 glasses of water 💧', points: 10, type: 'standard' },
+            { id: 'task1', title: 'Send a sweet morning text ☀️', points: 10, type: 'standard' },
             { id: 'task2', title: 'Upload a cute selfie of today 🤳', points: 30, type: 'upload' },
-            { id: 'task3', title: 'Do a 10-minute stretch 🧘‍♀️', points: 15, type: 'standard' },
-            { id: 'task4', title: 'Tell me one thing you love about us today 🥰', points: 20, type: 'standard' }
+            { id: 'task3', title: 'Tell me one thing you love about me today 🥰', points: 20, type: 'text-input' },
+            { id: 'task4', title: 'Let me choose your outfit for our next date night 👗👠', points: 40, type: 'standard' }
         ];
 
         const rewards = [
-            { id: 'reward1', title: 'Ice Cream Date 🍦', cost: 50, desc: 'Any flavor, any time this week!' },
-            { id: 'reward2', title: 'Foot Massage 🦶', cost: 100, desc: 'A relaxing 30-minute foot rub.' },
-            { id: 'reward3', title: 'Skip Chore Pass 🎫', cost: 150, desc: 'Pass a chore of your choice to me.' },
-            { id: 'reward4', title: 'Grand Dinner Date 👑', cost: 300, desc: 'Your choice of restaurant, dressed to the nines.' }
+            { id: 'reward1', title: '100 Rs in next Eidi ✉️', cost: 30, desc: 'A special bonus addition to your upcoming Eidi pouch!' },
+            { id: 'reward2', title: 'Midnight Drive + Late Night Chai 🚗☕', cost: 50, desc: 'A quiet, winding cruise through the city lights, ending with a hot cup of tea together.' },
+            { id: 'reward3', title: 'Buy a Ring 💍', cost: 100, desc: 'Pick out a gorgeous ring of your choice to add to your collection.' },
+            { id: 'reward4', title: 'Weekend Getaway Planning Pass 🗺️✈️', cost: 150, desc: 'Sit back completely. I will plan, book, and handle all itineraries for our next short holiday together.' },
+            { id: 'reward5', title: 'A Custom Premium Gift Package Box 🎁👑', cost: 300, desc: 'Unlock a beautifully curated gift collection box containing premium items you have had your eye on.' }
         ];
 
-        let appData = {
-            points: 0,
-            completedTasks: {},
-            logs: []
-        };
-
+        let appData = { points: 0, completedTasks: {}, logs: [] };
         const docRef = doc(db, "questHub", "sharedState");
 
         onSnapshot(docRef, (docSnap) => {
@@ -301,49 +466,71 @@
             updateUI();
         });
 
+        window.switchTab = function(pageId, navButton) {
+            document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            navButton.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function updateUI() {
             document.getElementById('total-points').innerText = appData.points || 0;
 
-            // Render Tasks
-            const tasksContainer = document.getElementById('tasks-container');
-            tasksContainer.innerHTML = '';
-
+            const tasksList = document.getElementById('tasks-list');
+            tasksList.innerHTML = '';
             tasks.forEach(task => {
                 const taskStatus = appData.completedTasks?.[task.id];
-                const isCompleted = !!taskStatus; 
+                const isCompleted = !!taskStatus;
                 const card = document.createElement('div');
                 card.className = 'card-item';
 
-                let uploadHTML = '';
+                let extraHTML = '';
                 if (task.type === 'upload') {
                     if (!isCompleted) {
-                        uploadHTML = `
-                            <div class="upload-btn-wrapper">
-                                <label class="custom-file-upload">
+                        extraHTML = `
+                            <div class="upload-container">
+                                <label class="file-drop-zone" for="file-${task.id}">
+                                    <span style="font-size:1.3rem; margin-bottom:4px;">📸</span>
+                                    <span>Select today's layout target</span>
                                     <input type="file" id="file-${task.id}" accept="image/*">
-                                    📸 Choose Photo
                                 </label>
                                 <img id="preview-${task.id}" class="preview-img" />
                             </div>
                         `;
                     } else {
-                        uploadHTML = `<img src="${taskStatus}" class="preview-img" style="display:block;" />`;
+                        extraHTML = `<img src="${taskStatus}" class="preview-img" style="display:block;" />`;
+                    }
+                } else if (task.type === 'text-input') {
+                    if (!isCompleted) {
+                        extraHTML = `
+                            <div class="text-response-container">
+                                <textarea id="text-input-${task.id}" class="love-text-box" placeholder="Acknowledge response log... ❤️"></textarea>
+                            </div>
+                        `;
+                    } else {
+                        extraHTML = `
+                            <div class="saved-response-box">
+                                "${taskStatus}"
+                            </div>
+                        `;
                     }
                 }
 
                 card.innerHTML = `
-                    <div class="card-row">
+                    <div class="card-body">
                         <div class="item-info">
                             <h3>${task.title}</h3>
-                            <span class="points-tag">+${task.points} pts</span>
+                            <span class="points-badge">+${task.points} PTS</span>
                         </div>
                         <button id="btn-${task.id}" ${isCompleted ? 'disabled' : ''}>
-                            ${isCompleted ? '✅ Done' : 'Complete'}
+                            ${isCompleted ? '✅ Logged' : 'Complete'}
                         </button>
                     </div>
-                    ${uploadHTML}
+                    ${extraHTML}
                 `;
-                tasksContainer.appendChild(card);
+                tasksList.appendChild(card);
 
                 if (!isCompleted) {
                     if (task.type === 'upload') {
@@ -353,52 +540,45 @@
                 }
             });
 
-            // Render Rewards
-            const rewardsContainer = document.getElementById('rewards-container');
-            rewardsContainer.innerHTML = '';
-
+            const rewardsList = document.getElementById('rewards-list');
+            rewardsList.innerHTML = '';
             rewards.forEach(reward => {
                 const currentPoints = appData.points || 0;
                 const canAfford = currentPoints >= reward.cost;
                 const card = document.createElement('div');
                 card.className = 'card-item';
                 card.innerHTML = `
-                    <div class="card-row">
+                    <div class="card-body">
                         <div class="item-info">
                             <h3>${reward.title}</h3>
                             <p>${reward.desc}</p>
+                            <span class="points-badge" style="color:var(--neon-pink); border-color: rgba(255, 71, 87, 0.2);">${reward.cost} PTS</span>
                         </div>
-                        <span class="points-tag">${reward.cost} pts</span>
-                    </div>
-                    <div class="card-row" style="margin-top: 10px; justify-content: flex-end;">
-                        <button ${!canAfford ? 'disabled' : ''} id="rew-${reward.id}">
-                            🎁 Redeem
+                        <button ${!canAfford ? 'disabled' : ''} id="rew-${reward.id}" style="background:${canAfford ? 'linear-gradient(135deg, var(--neon-pink), #ff6b81)' : ''}; box-shadow: ${canAfford ? '0 4px 12px rgba(255, 71, 87, 0.3)' : ''};">
+                            🎁 Unlock
                         </button>
                     </div>
                 `;
-                rewardsContainer.appendChild(card);
-
+                rewardsList.appendChild(card);
                 if (canAfford) {
                     card.querySelector(`#rew-${reward.id}`).addEventListener('click', () => redeemReward(reward.title, reward.cost));
                 }
             });
 
-            // Render Logs
-            const feedContainer = document.getElementById('feed-container');
+            const feedList = document.getElementById('feed-list');
             if(appData.logs && appData.logs.length > 0) {
-                feedContainer.innerHTML = appData.logs.map(log => `
-                    <div class="feed-item">
-                        <span>${log.text}</span>
+                feedList.innerHTML = appData.logs.map(log => `
+                    <div class="feed-card ${log.type || 'complete'}">
+                        <span style="font-weight:600; color: var(--text-primary);">${log.text}</span>
                         <span class="feed-time">${log.time}</span>
                     </div>
                 `).join('');
             } else {
-                feedContainer.innerHTML = `<div class="feed-item">No updates yet! Start your adventure.</div>`;
+                feedList.innerHTML = `<div class="feed-card" style="justify-content:center; color:var(--text-secondary);">No milestones logged yet! ✨</div>`;
             }
         }
 
         let temporaryImageString = "";
-
         function handleImageUpload(taskId) {
             const fileInput = document.getElementById(`file-${taskId}`);
             const preview = document.getElementById(`preview-${taskId}`);
@@ -417,24 +597,34 @@
 
         async function completeTask(task, taskPoints, type) {
             let taskPayloadValue = true;
+            let customLogText = `✨ Completed "${task.title}"`;
 
             if (type === 'upload') {
                 if (!temporaryImageString) {
-                    alert('Please select and upload a photo first!');
+                    alert('Please select an asset target first!');
                     return;
                 }
                 taskPayloadValue = temporaryImageString;
                 temporaryImageString = "";
+            } else if (type === 'text-input') {
+                const inputElement = document.getElementById(`text-input-${task.id}`);
+                const userText = inputElement.value.trim();
+                if (!userText) {
+                    alert('Please input a valid response log! 🥰');
+                    return;
+                }
+                taskPayloadValue = userText;
+                customLogText = `❤️ Logged payload: "${userText}"`;
             }
 
             const updatedCompleted = { ...(appData.completedTasks || {}) };
             updatedCompleted[task.id] = taskPayloadValue;
 
             const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            const newLog = { text: `✅ Completed: ${task.title}`, time: timeString };
-            const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 20); // Keep last 20 logs
+            const newLog = { text: customLogText, time: timeString, type: 'complete' };
+            const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 25);
 
-            confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+            confetti({ particleCount: 140, spread: 65, colors: ['#8b5cf6', '#ff4757', '#06b6d4'], origin: { y: 0.7 } });
 
             await updateDoc(docRef, {
                 points: (appData.points || 0) + taskPoints,
@@ -446,25 +636,21 @@
         async function redeemReward(rewardTitle, cost) {
             if (appData.points >= cost) {
                 const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const newLog = { text: `🎁 Redeemed: ${rewardTitle}`, time: timeString };
-                const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 20);
+                const newLog = { text: `🌹 Activated bundle "${rewardTitle}"`, time: timeString, type: 'redeem' };
+                const updatedLogs = [newLog, ...(appData.logs || [])].slice(0, 25);
 
-                confetti({ particleCount: 150, spread: 80, colors: ['#ff4757', '#ffa502', '#ffffff'] });
+                confetti({ particleCount: 180, spread: 100, colors: ['#ff4757', '#8b5cf6', '#ffffff'] });
 
                 await updateDoc(docRef, {
                     points: appData.points - cost,
                     logs: updatedLogs
                 });
-                alert(`🎉 Success! You redeemed: "${rewardTitle}"!`);
             }
         }
 
-        // Reset Day Trigger (Clears tasks, keeps points intact!)
         document.getElementById('admin-reset-btn').addEventListener('click', async () => {
-            if(confirm("Are you sure you want to reset all tasks for the day? (Points will not be touched!)")) {
-                await updateDoc(docRef, {
-                    completedTasks: {}
-                });
+            if(confirm("Ready to drop new daily tasks? Your points balance won't change!")) {
+                await updateDoc(docRef, { completedTasks: {} });
             }
         });
     </script>
