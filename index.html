@@ -457,19 +457,19 @@
         const db = getFirestore(app);
 
         const tasks = [
-            { id: 'task1', title: 'Send a sweet morning text ☀️', points: 10, type: 'standard' },
-            { id: 'task2', title: 'Upload a cute selfie of today 🤳', points: 30, type: 'upload' },
-            { id: 'task3', title: 'Tell me one thing you love about me today 🥰', points: 20, type: 'text-input' },
-            { id: 'task4', title: 'Let me choose your outfit for our next date night 👗👠', points: 40, type: 'standard' }
+            { id: 'task1', title: 'Send a sweet morning text ☀️', points: 30, type: 'standard' },
+            { id: 'task2', title: 'Upload a cute selfie of today 🤳', points: 100, type: 'upload' },
+            { id: 'task3', title: 'Tell me one thing you love about me today 🥰', points: 50, type: 'text-input' },
+            { id: 'task4', title: 'Let me choose your outfit for our next date night 👗👠', points: 70, type: 'standard' }
         ];
 
         // Updated array incorporating the customized choices for 2, 4, and 5
         const rewards = [
-            { id: 'reward1', title: '100 Rs in next Eidi ✉️', cost: 30, desc: 'A special bonus addition to your upcoming Eidi pouch!' },
-            { id: 'reward2', title: 'Midnight Drive + Late Night Chai 🚗☕', cost: 50, desc: 'A quiet, winding cruise through the city lights, ending with a hot cup of tea together.' },
-            { id: 'reward3', title: 'Buy a Ring 💍', cost: 100, desc: 'Pick out a gorgeous ring of your choice to add to your collection.' },
+            { id: 'reward1', title: '100 Rs in next Eidi ✉️', cost: 300, desc: 'A special bonus addition to your upcoming Eidi pouch!' },
+            { id: 'reward2', title: 'Midnight Drive + Late Night Chai 🚗☕', cost: 150, desc: 'A quiet, winding cruise through the city lights, ending with a hot cup of tea together.' },
+            { id: 'reward3', title: 'Buy a Ring 💍', cost: 500, desc: 'Pick out a gorgeous ring of your choice to add to your collection.' },
             { id: 'reward4', title: 'Weekend Getaway Planning Pass 🗺️✈️', cost: 150, desc: 'Sit back completely. I will plan, book, and handle all itineraries for our next short holiday together.' },
-            { id: 'reward5', title: 'A Custom Premium Gift Package Box 🎁👑', cost: 300, desc: 'Unlock a beautifully curated gift collection box containing premium items you have had your eye on.' }
+            { id: 'reward5', title: 'A Custom Premium Gift Package Box 🎁👑', cost: 400, desc: 'Unlock a beautifully curated gift collection box containing premium items you have had your eye on.' }
         ];
 
         let appData = { points: 0, completedTasks: {}, logs: [] };
